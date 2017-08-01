@@ -21,3 +21,6 @@ message(STATUS "Found pybind11: ${pybind11_CONFIG}")
 
 # Creates a python module named "module_name"
 pybind11_add_module(basic_mod MODULE basic_mod.cpp)
+
+OPTION (USE_OpenMP "Use OpenMP" ON)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")

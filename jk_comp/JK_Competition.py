@@ -1,6 +1,7 @@
 import numpy as np 
 import psi4
 import build.basic_mod as bm
+import timeit
 
 # Make sure we get the same random array
 np.random.seed(0)
@@ -15,7 +16,7 @@ H 1 1.1 2 104
 mol.update_geometry()
 
 # Build a ERI tensor
-basis = psi4.core.BasisSet.build(mol, target="cc-pVDZ")
+basis = psi4.core.BasisSet.build(mol, target="cc-pVTZ")
 mints = psi4.core.MintsHelper(basis)
 I = np.array(mints.ao_eri())
 
@@ -35,7 +36,9 @@ np.array(D, copy=False)
 J = np.empty([I.shape[0], I.shape[1]])
 bm.einJ(I, D, J)
 #J = np.random.rand(nbf, nbf)
-K = np.random.rand(nbf, nbf)
+K = np.empty([I.shape[0], I.shape[1]])
+bm.einK(I, D, K)
+#K = np.random.rand(nbf, nbf)
 
 # Make sure your implementation is correct
 print("J is correct: %s" % np.allclose(J, J_ref))
